@@ -49,3 +49,24 @@ When the device is lit up red - your are muted.
 When the device is lit up green - you are not muted.
 
 The device will not show a colour until it is first tapped (using three fingers as per Luxafor documentation).
+
+## Run on Boot
+
+- `systemctl --user --force --full edit luxaformute.service`
+- Needs to be `--user` to work with PulseAudio environment variables
+
+```ini
+[Unit]
+Description=Luxafor Button Mute Service
+After=default.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/lif3line/repos/LuxaforMute/mute.py
+
+[Install]
+WantedBy=default.target
+```
+
+- `systemctl --user enable --now luxaformute.service`
+- `systemctl --user status luxaformute.service`
+- Review outputs: `journalctl -b -e`
