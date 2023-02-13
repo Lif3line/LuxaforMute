@@ -46,19 +46,19 @@ def main():
             # Byte 6-8: Not sure what these are for, likely to be flash patterns etc
 
             if "Mute: yes" in mute:
-                dev.write(1, [1, 1, 255, 0, 0, 0, 0, 0])
-                dev.write(1, [1, 2, 255, 0, 0, 0, 0, 0])
-                dev.write(1, [1, 3, 255, 0, 0, 0, 0, 0])
-                dev.write(1, [1, 4, 255, 0, 0, 0, 0, 0])
-                dev.write(1, [1, 5, 255, 0, 0, 0, 0, 0])
-                dev.write(1, [1, 6, 255, 0, 0, 0, 0, 0])
-            else:
                 dev.write(1, [1, 1, 0, 128, 0, 0, 0, 0])
                 dev.write(1, [1, 2, 0, 128, 0, 0, 0, 0])
                 dev.write(1, [1, 3, 0, 128, 0, 0, 0, 0])
                 dev.write(1, [1, 4, 0, 128, 0, 0, 0, 0])
                 dev.write(1, [1, 5, 0, 128, 0, 0, 0, 0])
                 dev.write(1, [1, 6, 0, 128, 0, 0, 0, 0])
+            else:
+                dev.write(1, [1, 1, 255, 0, 0, 0, 0, 0])
+                dev.write(1, [1, 2, 255, 0, 0, 0, 0, 0])
+                dev.write(1, [1, 3, 255, 0, 0, 0, 0, 0])
+                dev.write(1, [1, 4, 255, 0, 0, 0, 0, 0])
+                dev.write(1, [1, 5, 255, 0, 0, 0, 0, 0])
+                dev.write(1, [1, 6, 255, 0, 0, 0, 0, 0])
 
 
 if __name__ == "__main__":
