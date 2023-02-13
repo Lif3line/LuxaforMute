@@ -1,5 +1,5 @@
 from array import array
-import usb.core
+import usb.core  # pyusb
 import usb.util
 import os
 
@@ -17,9 +17,7 @@ def main():
     try:
         dev.set_configuration()
     except usb.core.USBError:
-        print(
-            "If you receive this error, it is likely you haven't configured the rule for the Luxafor device"
-        )
+        print("If you receive this error, it is likely you haven't configured the rule for the Luxafor device")
         return
     dev.set_configuration()
     while True:
@@ -28,11 +26,12 @@ def main():
         if data == array("B", [131, 1, 0, 0, 0, 0, 0, 0]):
             # Run pactl list and grep by input to find your microphone source, mine is 2 - yours could be different
             # The command bellow toggles the mute flag
-            os.system("pactl set-source-mute 2 toggle")
+            os.system("pactl set-source-mute @DEFAULT_SOURCE@ toggle")
             # This command gets the mute status of all devices, finds the final mute in the output and uses this to
             # figure out the current mute status of the microphone
             mute = os.popen(
-                "pacmd list-sources | grep -e 'index: 2' -e muted | tail -1"
+                'CURRENT_SOURCE=$(pactl info | grep "Default Source" | cut -f3 -d" ");'
+                + 'pactl list sources | grep -A 10 $CURRENT_SOURCE | grep "Mute: yes"'
             ).read()
 
             # Just a bit of logic to handle the colour of the light dependant on mute status
@@ -43,14 +42,14 @@ def main():
             # Byte 3-5: RGB value for the colour you want to select
             # Byte 6-8: Not sure what these are for, likely to be flash patterns etc
 
-            if "muted: yes" in mute:
+            if "Mute: yes" in mute:
                 dev.write(1, [1, 1, 255, 0, 0, 0, 0, 0])
                 dev.write(1, [1, 2, 255, 0, 0, 0, 0, 0])
                 dev.write(1, [1, 3, 255, 0, 0, 0, 0, 0])
                 dev.write(1, [1, 4, 255, 0, 0, 0, 0, 0])
                 dev.write(1, [1, 5, 255, 0, 0, 0, 0, 0])
                 dev.write(1, [1, 6, 255, 0, 0, 0, 0, 0])
-            elif "muted: no" in mute:
+            else:
                 dev.write(1, [1, 1, 0, 128, 0, 0, 0, 0])
                 dev.write(1, [1, 2, 0, 128, 0, 0, 0, 0])
                 dev.write(1, [1, 3, 0, 128, 0, 0, 0, 0])
