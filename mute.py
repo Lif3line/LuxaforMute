@@ -17,7 +17,10 @@ def main():
     try:
         dev.set_configuration()
     except usb.core.USBError:
-        print("If you receive this error, it is likely you haven't configured the rule for the Luxafor device")
+        print(
+            "If you receive this error, it is likely you haven't configured the rule for the Luxafor device "
+            + "or it is in use by another program"
+        )
         return
     dev.set_configuration()
     while True:
