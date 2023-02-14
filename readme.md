@@ -70,3 +70,4 @@ WantedBy=default.target
 - `systemctl --user enable --now luxaformute.service`
 - `systemctl --user status luxaformute.service`
 - Review outputs: `journalctl -b -e`
+- `systemctl --user restart luxaformute.service`
